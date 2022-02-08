@@ -30,10 +30,10 @@ int main(int argc, char** argv)
     {
         if (outputs[i] == 0)
         {
-            printf(". / ");
+            printf(". | ");
             continue;
         }
-        printf("%.0f / ", round(outputs[i]));
+        printf("%.0f | ", round(outputs[i]));
     }
     printf("\n");
     return 0;
