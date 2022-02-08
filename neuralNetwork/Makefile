@@ -1,23 +1,29 @@
+# Makefile
 CC=gcc
 CPPFLAGS= `pkg-config --cflags sdl` -MMD
 CFLAGS= -Wall -Wextra -g -fsanitize=address
 LDFLAGS= -lm -ldl
 LDLIBS= `pkg-config --libs sdl SDL_image`
 
-SRC= pixel_operations.c model_training.c imgToBoard.c model.c main.c 
+SRC= model_training.c model.c main.c pixel_operations.c imgToArray.c 
 
-OBJ= $(SRC:%.c=%.o)
+OBJ= $(SRC:.c=.o)
 DEP= ${SRC:.c=.d}
-PRG= ${SRC:.c=.out}
 
-all: rule
+all: model
 
-rule: $(OBJ)
-	$(CC) -o main.out $(CFLAGS) $^ $(LDFLAGS) $(LDLIBS)
+model: main.o model.o model_training.o pixel_operations.o imgToArray.o
+
+#$(OBJ)
+#	$(CC) -o main.out $(CFLAGS) $^ $(LDFLAGS) $(LDLIBS)
 
 -include ${DEP}
 
+.PHONY: clean
+
 clean:
-	rm -f *.o
-	rm -f *.d
-	rm -f ${PRG}
+	${RM} ${OBJ}
+	${RM} ${DEP}
+	${RM} model
+
+# END

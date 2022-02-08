@@ -4,24 +4,29 @@
 #include <math.h>
 #include "model_training.h"
 #include "model.h"
-#include "imgToBoard.h"
+#include "imgToArray.h"
 
-int main(char argc, char** argv)
+int main(int argc, char** argv)
 {
+	// Checking arguments
     if (argc > 2)
+    {
         printf("Too many arguments");
         return 1;
-    
-    double *inputs;
-    double outputs[argv[1]];
-
-    for (size_t i = 0; i < argv[1]; i++)
-    {
-        inputs = ImageToList(i+1);
-        outputs[i] = recognition(inputs);
     }
 
-    for (size_t i = 0; i < argv[1]; i++)
+	// Creating inputs and outputs
+    double *inputs;
+	size_t size = atoi(argv[1]) * atoi(argv[1]);
+    double outputs[size];
+    
+    for (size_t i = 0; i < size; i++)
+    {
+        inputs = ImageToList(i);
+        outputs[i] = recognition(inputs);
+    }
+    
+    for (size_t i = 0; i < size; i++)
     {
         if (outputs[i] == 0)
         {
