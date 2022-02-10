@@ -3,7 +3,7 @@
 // tableau à deux dimensions [i][j]
 struct trncn **chemin_trouve;
 
-void get_chemin(struct trncn **trncns) {
+void get_chemin(struct trncn **trncns, int entry, int exit) {
     
 }
 
