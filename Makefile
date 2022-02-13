@@ -1,10 +1,10 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -std=c99
+CFLAGS = -Wall -Wextra -Werror -std=c99 -g
 
-all : get_chemin
+all : main
 
-get_chemin: chemin.o
-chemin.o : trncn.h
+main: main.o chemin.o
+chemin.o : chemin.h trncn.h
 
 .PHONY : clean
 clean :

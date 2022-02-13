@@ -3,11 +3,11 @@
 #include "trncn.h"
 
 /* Coordinate reference.
-   : x0 x1 x2 →
-y0 :
-y1 :
-y2
- ↓ :
+   x0 x1 x2 →
+y0 
+y1 
+y2 
+ ↓ 
 */
 
 int SIZE = 1000; // The number of section.
@@ -78,8 +78,10 @@ void get_chemin(struct point entry) {
     chemin_trouve = tmp;
 }
 
+/*
 int main() {
     chemin_trouve = malloc(SIZE * sizeof(struct trncn *));
     // get_chemin();
     return 1;
 }
+*/
