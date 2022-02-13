@@ -2,6 +2,7 @@
 #include <string.h>
 #include <err.h>
 #include "trncn.h"
+#include <stdio.h>
 
 /* Coordinate reference.
    x0 x1 x2 →
@@ -11,7 +12,7 @@ y2
  ↓ 
 */
 
-int SIZE = 1000; // The number of section.
+int SIZE;
 struct trncn **trncns;
 struct trncn **chemin_trouve;
 int found_size;
@@ -26,6 +27,7 @@ int __get_chemin(struct point entry) {
     
     if (srt.x == entry.x && srt.y == entry.y) {
     // if we've arrived at the exit
+        printf("found");
         return 1;
     }
 
@@ -76,16 +78,8 @@ int __get_chemin(struct point entry) {
 void get_chemin(struct point entry) {
     found_size = 0;
     __get_chemin(entry);
-    struct trncn **tmp = malloc(found_size * sizeof(struct trncn *));
-    memcpy(tmp, chemin_trouve + SIZE-1-found_size, found_size);
-    free(chemin_trouve);
-    chemin_trouve = tmp;
+    // struct trncn **tmp = malloc(found_size * sizeof(struct trncn *));
+    //memcpy(tmp, chemin_trouve + SIZE-1-found_size, found_size);
+    //free(chemin_trouve);
+    //chemin_trouve = tmp;
 }
-
-/*
-int main() {
-    chemin_trouve = malloc(SIZE * sizeof(struct trncn *));
-    // get_chemin();
-    return 1;
-}
-*/

@@ -1,11 +1,14 @@
 #include "trncn.h"
 #include "chemin.h"
+#include <stdio.h>
 #include <stdlib.h>
 
 int main() {
 
     // Creation of cases for our test.
-    
+   
+    SIZE = 15;
+
     trncns = malloc(sizeof(struct trncn *) * 5);
     for(int i = 0; i < 5; i++) {
         trncns[i] = malloc(sizeof(struct trncn) * 3);
@@ -158,4 +161,18 @@ int main() {
 
     // We run our solver.
     get_chemin(entry);
+
+    printf("Solution :");
+    printf("%i", found_size);
+    for(int s = 0; s <found_size; s++) {
+        for(int i = 0; i < 3; i++) {
+            for(int j = 0; j < 5; j++) {
+                if (chemin_trouve[s] == &trncns[i][j]) {
+                    printf("case[%i][%i]", i, j);
+                    i = 3;
+                    break;
+                }
+            }
+        }
+    }
 }
