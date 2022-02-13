@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
+#include <err.h>
 #include "trncn.h"
 
 /* Coordinate reference.
@@ -50,6 +51,9 @@ int __get_chemin(struct point entry) {
             case 3: new_entry.x++;
                 break;
         }
+	if (new_entry.x < 0 || new_entry.y < 0) {
+		errx(0, "Erreur : direction de tronçon d'entrée."); 
+	}
         if (trncns[new_entry.x][new_entry.y].parcourue == 0)
             // if the adjacent section has never been visited
             if (__get_chemin(new_entry) == 1) {
