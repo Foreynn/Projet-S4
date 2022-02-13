@@ -6,7 +6,10 @@ int main() {
 
     // Creation of cases for our test.
     
-    struct trncn **cases = malloc(sizeof(struct trncn *) * 15);
+    struct trncn **cases = malloc(sizeof(struct trncn *) * 5);
+    for(int i = 0; i < 3; i++) {
+        cases[i] = malloc(sizeof(struct trncn) * 3);
+    }
 
     struct trncn c0 = {
         .dgr = 2,
