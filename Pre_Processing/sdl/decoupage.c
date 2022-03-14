@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <err.h>
+#include <string.h>
 #include "pixel_operations.h"
 
 void init_sdl()
@@ -27,73 +28,49 @@ SDL_Surface* load_image(char *path)
     return img;
 }
 
-//This functions allow me to get the dimension (width*height) of one case of the maze
-/*We travel the first line of the image (maze) and we must to detect the entrance
-  so when the pixel is white, considering this we get the dimension of one case 
-  by detect the first pixel white and the last pixel white before the next pixel black
- */
-unsigned int getDimension(SDL_Surface *img)
+// This function returns the size of a case (the width or height since it's
+// a square) and the size of the border int the borderSize argument.
+unsigned int getDimension(SDL_Surface *img, int *borderSize)
 {
+    unsigned int size = 0;
+    unsigned int white = 0;
 
-    unsigned int res = 0;
-    unsigned int width = img->w;
-    unsigned int i = 0;
-    unsigned int firstWhite = 0;
-    // unsigned lastWhite;
-    int found = 0;
-    //unsigned firstpos;
-    Uint8 total =0;
-    //Travel only the first line of maze because the entrance is in first line
-    while ((i < width) && (found == 0)) 
-    {   
-        Uint32 pixel = get_pixel(img,i,0);
-        Uint8 r,g,b;
+    while (white < 2)
+    {
+        Uint32 pixel = get_pixel(img, size, size);
+
+        Uint8 r, g, b;
         SDL_GetRGB(pixel, img->format, &r, &g, &b);
-        total = r;
-        total = g;
-        total = b;
-        //pixel = SDL_MapRGB(img->format, r, g, b); 
-        //     printf("p[%u][0] = " "%" PRIu8 "\n", i, total);
 
-        if (total == 255) //pixel white means, r=g=b = 255
-        { 
-            firstWhite = i;
-            while (total != 0)
-            {
-                pixel = get_pixel(img, firstWhite, 0);
-                SDL_GetRGB(pixel, img->format, &r, &g, &b);
-                total = r;
-                firstWhite++;
-            }
-            res = (firstWhite - 1) - i;       
-            found = 1;
-            //printf("the first pixel white is in (%u,0)\n", firstWhite); 
+        if (white == 0)
+        {
+            if (r == 255 && g == 255 && b == 255)
+                white++;
+
+            (*borderSize)++;
         }
 
-        i++;
+        if (white == 1 && r == 0 && g == 0 && b == 0)
+            white++;
+
+        size++;
     }
 
-    return res;
+    return size;
 }
 
-
-
-SDL_Surface *extraction_from_image(SDL_Surface *img)
+// This function saves an image (the case corresponding to the given
+// coordinates) to a file named cut_images_XXXX.bmp.
+void saveImg(SDL_Surface *img, int x, int y, int size, char* name)
 {
-    SDL_Rect srcrect;
-    SDL_Surface *case1;
-    case1 = SDL_CreateRGBSurface(0, 14,14, 32,0,0,0,0);
+    SDL_Rect srcrect = { x, y, size, size };
+    SDL_Surface *cut_image = SDL_CreateRGBSurface(0, size, size, 32, 0, 0, 0, 0);
 
-    srcrect.x = 0;
-    srcrect.y = 0;
-    srcrect.w = 14;
-    srcrect.h = 14;
+    SDL_BlitSurface(img, &srcrect, cut_image, NULL);
 
-    if (SDL_BlitSurface(img, &srcrect, case1, NULL) != 0)
-        warnx("BlitSurface error: %s\n", SDL_GetError());
-    //SDL_UpdateRect(case1, 0,0, 14,14);
-    SDL_SaveBMP(case1, "case1.bmp");
-    return case1;
+    //TODO RESIZE IMAGE TO 9x9.
+
+    SDL_SaveBMP(cut_image, name);
 }
 
 SDL_Surface *display_image(SDL_Surface *img)
@@ -144,15 +121,19 @@ int main()
     SDL_Surface *image_surface;
 
     init_sdl();
-  
+
     image_surface = load_image("image/maze5x5.png");
     screen = display_image(image_surface);
-    unsigned int a = getDimension(image_surface);
-    printf("the dimension of one case is : %ux%u\n", a,a);
+
+    int borderSize = 0;
+    unsigned int size = getDimension(image_surface, &borderSize);
+
+    saveImg(image_surface, 1, 1, size, "cut_images_0001.bmp");
+
+    printf("The dimension of a case is: %ux%u pixels.\nThe border is %i pixels wide\n", size, size, borderSize);
 
     wait_for_keypressed();
     SDL_FreeSurface(image_surface);
     SDL_FreeSurface(screen);
     SDL_Quit();
 }
-
