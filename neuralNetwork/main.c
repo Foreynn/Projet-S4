@@ -28,11 +28,6 @@ int main(int argc, char** argv)
     
     for (size_t i = 0; i < size; i++)
     {
-        if (outputs[i] == 0)
-        {
-            printf(". | ");
-            continue;
-        }
         printf("%.0f | ", round(outputs[i]));
     }
     printf("\n");
