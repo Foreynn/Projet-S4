@@ -137,7 +137,7 @@ int main()
         for (int j = borderSize/2; j < image_surface->w-1; j += size)
         {
             char* name;
-            asprintf(&name, "../../cut_images/cut_images_%04d.bmp", n);
+            asprintf(&name, "../../cut_images/%04d.bmp", n);
 
             saveImg(image_surface, i, j, size, name);
             n++;
