@@ -165,16 +165,22 @@ int main() {
     // We run our solver.
     get_chemin(entry);
 
-    printf("Solution: \n");
+    printf("\nSolution: \n");
     // printf("%i", found_size);
     for(int s = 0; s < SIZE; s++) {
         for(int i = 0; i < 3; i++) {
             for(int j = 0; j < 5; j++) {
                 if (chemin_trouve[s] == &trncns[i][j]) {
-                    printf("\t · case[%i][%i]\n", i, j);
+                    printf("\t · case[%i][%i]", i, j);
+                    if (i == entry.x && j == entry.y)
+                        printf(" (départ)");
+                    else if (i == srt.x && j == srt.y)
+                        printf(" (arrivé)");
+                    printf("\n");
                     break;
                 }
             }
         }
     }
+    printf("\n");
 }
