@@ -28,7 +28,7 @@ void SDL_FreeSurface(SDL_Surface *surface);
 // la fonction qui transforme l'image en list de 0 et 1
 double* ImageToList(double imageNumber)
 {
-    char path[23] = {'.','.','/','c','u','t','_','i','m','a','g','e','s','/','0','0','0','0','.','p','n','g',0};
+    char path[23] = {'.','.','/','c','u','t','_','i','m','a','g','e','s','/','0','0','0','0','.','b','m','p',0};
     //char* path = "../cut_images/0000.png";
 
     init_sdl();
