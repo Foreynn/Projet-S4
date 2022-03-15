@@ -46,12 +46,12 @@ unsigned int getDimension(SDL_Surface *img, int *borderSize)
         {
             if (r == 255 && g == 255 && b == 255)
                 white++;
-
-            (*borderSize)++;
+            else
+                (*borderSize)++;
         }
 
         if (white == 1 && r == 0 && g == 0 && b == 0)
-            white++;
+            break;
 
         size++;
     }
@@ -68,7 +68,11 @@ void saveImg(SDL_Surface *img, int x, int y, int size, char* name)
 
     SDL_BlitSurface(img, &srcrect, cut_image, NULL);
 
-    //TODO RESIZE IMAGE TO 9x9.
+    //TODO RESIZE
+        /* #include <SDL/SDL_gfx.h>
+    **
+    ** something with rotozoomSurface();
+    */
 
     SDL_SaveBMP(cut_image, name);
 }
@@ -88,7 +92,7 @@ SDL_Surface *display_image(SDL_Surface *img)
     if ( SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 17, 206, 112)) != 0)
         errx(1,"Could not color the screen : %s\n", SDL_GetError());
 
-    //We paste the SDL_Surface representing img on SDL_Surface representing the screen 
+    //We paste the SDL_Surface representing img on SDL_Surface representing the screen
     if(SDL_BlitSurface(img, NULL, screen, NULL) < 0)
         warnx("BlitSurface error: %s\n", SDL_GetError());
 
@@ -127,8 +131,18 @@ int main()
 
     int borderSize = 0;
     unsigned int size = getDimension(image_surface, &borderSize);
+    int n = 0;
+    for (int i = borderSize/2; i < image_surface->h-1; i += size)
+    {
+        for (int j = borderSize/2; j < image_surface->w-1; j += size)
+        {
+            char* name;
+            asprintf(&name, "../../cut_images/cut_images_%04d.bmp", n);
 
-    saveImg(image_surface, 1, 1, size, "cut_images_0001.bmp");
+            saveImg(image_surface, i, j, size, name);
+            n++;
+        }
+    }
 
     printf("The dimension of a case is: %ux%u pixels.\nThe border is %i pixels wide\n", size, size, borderSize);
 

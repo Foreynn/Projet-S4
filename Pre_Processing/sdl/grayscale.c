@@ -65,20 +65,8 @@ void wait_for_keypressed()
     } while(event.type != SDL_KEYUP);
 }
 
-int main()
+void grayscale(SDL_Surface* image_surface)
 {
-    SDL_Surface* image_surface;
-    SDL_Surface* screen_surface;
-
-    // Initialize the SDL
-    init_sdl();
-
-    image_surface = load_image("image/mazecolor.png");
-    //  Display the image.
-    screen_surface = display_image(image_surface);
-    //  Wait for a key to be pressed.
-    wait_for_keypressed();
-
     int width = image_surface->w;
     int height = image_surface->h;
 
@@ -95,6 +83,43 @@ int main()
             put_pixel(image_surface, i, j, pixel);
         }
     }
+}
+
+void blackAndWhite(SDL_Surface* image_surface)
+{
+    int width = image_surface->w;
+    int height = image_surface->h;
+
+    for (int i = 0; i < width; i++)
+    {
+        for (int j = 0; j < height; j++)
+        {
+            Uint32 pixel = get_pixel(image_surface, i, j);
+            Uint8 r, g, b;
+            SDL_GetRGB(pixel, image_surface->format, &r, &g, &b);
+            if (r != 255 && g != 255 && b != 255)
+                r = g = b = 0;
+            pixel = SDL_MapRGB(image_surface->format, r, g, b);
+            put_pixel(image_surface, i, j, pixel);
+        }
+    }
+}
+
+int main()
+{
+    SDL_Surface* image_surface;
+    SDL_Surface* screen_surface;
+
+    // Initialize the SDL
+    init_sdl();
+
+    image_surface = load_image("image/mazecolor.png");
+    //  Display the image.
+    screen_surface = display_image(image_surface);
+    //  Wait for a key to be pressed.
+    wait_for_keypressed();
+
+    blackAndWhite(image_surface);
 
     update_surface(screen_surface, image_surface);
     wait_for_keypressed();
