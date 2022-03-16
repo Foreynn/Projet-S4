@@ -6,154 +6,117 @@
 
 int main() {
 
-    // Creation of cases for our test.
-   
-    SIZE = 15;
+    char *filename = "neuralNetwork/output.csv";
+    FILE *fp = fopen(filename, "r");
 
-    trncns = malloc(sizeof(struct trncn *) * 3);
-    for(int i = 0; i < 3; i++) {
-        trncns[i] = malloc(sizeof(struct trncn) * 5);
+    if (fp == NULL)
+    {
+        printf("Error: could not open file %s", filename);
+        return 1;
+    }
+
+    int n; // total number of case.
+    int r; // total number of line.
+    int c; // total number of column.
+
+    SIZE = n; // We copie n in SIZE.
+
+    trncns = malloc(sizeof(struct trncn *) * c);
+    for (int i = 0; i < c; i++) {
+        trncns[i] = malloc(sizeof(struct trncn) * r);
     }
     
-    struct trncn c0 = {
-        .dgr = 1,
-        .accs = malloc(sizeof(int)),
-        .parcourue = 0
-    };
-    c0.accs[0] = RIGHT;
-    trncns[0][0] = c0;
-    
-    struct trncn c3 = {
-        .dgr = 1,
-        .accs = malloc(sizeof(int)),
-        .parcourue = 0
-    };
-    c3.accs[0] = DOWN;
-    trncns[0][1] = c3;
-    
-    struct trncn c6 = {
-        .dgr = 2,
-        .accs = malloc(sizeof(int) * 3),
-        .parcourue = 0
-    };
-    c6.accs[0] = UP;
-    c6.accs[1] = RIGHT;
-    c6.accs[2] = DOWN;
-    trncns[0][2] = c6;
-    
-    struct trncn c9 = {
-        .dgr = 3,
-        .accs = malloc(sizeof(int) * 3),
-        .parcourue = 0
-    };
-    c9.accs[0] = UP;
-    c9.accs[1] = RIGHT;
-    c9.accs[2] = DOWN;
-    trncns[0][3] = c9;
-    
-    struct trncn c12 = {
-        .dgr = 1,
-        .accs = malloc(sizeof(int)),
-        .parcourue = 0
-    };
-    c12.accs[0] = UP;
-    trncns[0][4] = c12;
-    
-    struct trncn c1 = {
-        .dgr = 2,
-        .accs = malloc(sizeof(int) * 2),
-        .parcourue = 0
-    };
-    c1.accs[0] = LEFT;
-    c1.accs[1] = DOWN;
-    trncns[1][0] = c1;
-    
-    struct trncn c4 = {
-        .dgr = 2,
-        .accs = malloc(sizeof(int) * 2),
-        .parcourue = 0
-    };
-    c4.accs[0] = UP;
-    c4.accs[1] = RIGHT;
-    trncns[1][1] = c4;
-    
-    struct trncn c7 = {
-        .dgr = 1,
-        .accs = malloc(sizeof(int)),
-        .parcourue = 0
-    };
-    c7.accs[0] = LEFT;
-    trncns[1][2] = c7;
-    
-    struct trncn c10 = {
-        .dgr = 2,
-        .accs = malloc(sizeof(int) * 2),
-        .parcourue = 0
-    };
-    c10.accs[0] = LEFT;
-    c10.accs[1] = RIGHT;
-    trncns[1][3] = c10;
-    
-    struct trncn c13 = {
-        .dgr = 1,
-        .accs = malloc(sizeof(int)),
-        .parcourue = 0
-    };
-    c13.accs[0] = RIGHT;
-    trncns[1][4] = c13;
-    
-    struct trncn c2 = {
-        .dgr = 1,
-        .accs = malloc(sizeof(int)),
-        .parcourue = 0
-    };
-    c2.accs[0] = DOWN;
-    trncns[2][0] = c2;
-    
-    struct trncn c5 = {
-        .dgr = 3,
-        .accs = malloc(sizeof(int) * 3),
+    // reading line by line, max 256 bytes
+    const unsigned MAX_LENGTH = 256;
+    char buffer[MAX_LENGTH];
 
-        .parcourue = 0
-    };
-    c5.accs[0] = UP;
-    c5.accs[1] = LEFT;
-    c5.accs[2] = DOWN;
-    trncns[2][1] = c5;
-    
-    struct trncn c8 = {
-        .dgr = 2,
-        .accs = malloc(sizeof(int) * 2),
-        .parcourue = 0
-    };
-    c8.accs[0] = UP;
-    c8.accs[1] = DOWN;
-    trncns[2][2] = c8;
-    
-    struct trncn c11 = {
-        .dgr = 3,
-        .accs = malloc(sizeof(int) * 3),
-        .parcourue = 0
-    };
-    c11.accs[0] = LEFT;
-    c11.accs[1] = UP;
-    c11.accs[2] = DOWN;
-    trncns[2][3] = c11;
-    
-    struct trncn c14 = {
-        .dgr = 2,
-        .accs = malloc(sizeof(int) * 2),
-        .parcourue = 0
-    };
-    c14.accs[0] = UP;
-    c14.accs[1] = LEFT;
-    trncns[2][4] = c14;
+    for (int i = 0; fgets(buffer, MAX_LENGTH, fp); i++) {
+        int number = atoi(buffer);
+        int degre;
+        int arr[4];
+        switch (number) {
+            case 0:
+                degre = 0;
+                break;
+            case 1:
+                degre = 1;
+                arr[0] = LEFT;
+                break;
+            case 2:
+                degre = 1;
+                arr[0] = UP;
+                break;
+            case 3:
+                degre = 1;
+                arr[0] = RIGHT;
+                break;
+            case 4:
+                degre = 1;
+                arr[0] = DOWN;
+                break;
+            case 5:
+                degre = 2;
+                arr[0] = LEFT;
+                arr[1] = UP;
+                break;
+            case 6:
+                degre = 2;
+                arr[0] = UP;
+                arr[1] = RIGHT;
+                break;
+            case 7:
+                degre = 2;
+                arr[0] = RIGHT;
+                arr[1] = DOWN;
+                break;
+            case 8:
+                degre = 2;
+                arr[0] = DOWN;
+                arr[1] = LEFT;
+                break;
+            case 9:
+                degre = 3;
+                arr[0] = LEFT;
+                arr[1] = UP;
+                arr[2] = RIGHT;
+                break;
+            case 10:
+                degre = 3;
+                arr[0] = UP;
+                arr[1] = RIGHT;
+                arr[2] = DOWN;
+                break;
+            case 11:
+                degre = 3;
+                arr[0] = RIGHT;
+                arr[1] = LEFT;
+                arr[2] = DOWN;
+                break;
+            case 12:
+                degre = 3;
+                arr[0] = DOWN;
+                arr[1] = LEFT;
+                arr[2] = UP;
+                break;
+            case 13:
+                degre = 4;
+                arr[0] = LEFT;
+                arr[1] = UP;
+                arr[2] = RIGHT;
+                arr[3] = DOWN;
+                break;
+        }
+
+        trncns[i/n][i%n].dgr = degre;
+        trncns[i/n][i%n].accs = malloc(sizeof(int) * degre);
+        trncns[i/n][i%n].parcourue = 0;
+        for(int i = 0; i < degre; i++)
+            trncns[i/n][i%n].accs[i] = arr[i];
+    }
 
     // We create the exit of our maze test.
     srt.x = 0;
     srt.y = 4;
-
-    // Maze generated!
 
     // Where to stock the solution of the maze.
     chemin_trouve = malloc(sizeof(struct trncn *) * 15);
