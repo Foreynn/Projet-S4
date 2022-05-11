@@ -9,4 +9,3 @@ chemin.o : chemin.h trncn.h
 .PHONY : clean
 clean :
 	rm *.o
-	rm main
