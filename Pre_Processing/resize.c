@@ -63,33 +63,6 @@ SDL_Surface* size_reduction(SDL_Surface * image, int W, int H){
             put_pixel(new_image,x,y,pixel);
         }
     }
-    //SDL_BlitScaled(image, NULL, new_image, NULL);
-
+    
     return new_image;
-}
-
-
-// Main Function
-
-int main(int argc, char** argv){
-    if (argc != 2){
-        errx(1,"Incorrect command. Please state ./preprocessing and the desired image's path.");
-        return EXIT_FAILURE;
-    }
-
-    // load image
-    SDL_Surface *image;
-    image = load_image(argv[1]);
-
-    SDL_Surface *new_image;
-    new_image = size_reduction(image,9,9);
-
-    // Save the new image
-    SDL_SaveBMP(new_image, argv[1]);
-
-    // Free allocated memory
-    SDL_FreeSurface(image);
-    SDL_FreeSurface(new_image);
-
-    return EXIT_SUCCESS;
 }

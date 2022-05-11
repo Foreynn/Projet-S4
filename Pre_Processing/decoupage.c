@@ -5,6 +5,7 @@
 #include <err.h>
 #include <string.h>
 #include "pixel_operations.h"
+#include "resize.h"
 
 void init_sdl()
 {
@@ -68,11 +69,12 @@ void saveImg(SDL_Surface *img, int x, int y, int size, char* name)
 
     SDL_BlitSurface(img, &srcrect, cut_image, NULL);
 
-    //TODO RESIZE
-        /* #include <SDL/SDL_gfx.h>
-    **
-    ** something with rotozoomSurface();
-    */
+    SDL_Surface *new_image;
+    new_image = size_reduction(cut_image, 9, 9);
+
+    cut_image = new_image;
+
+    free(new_image);
 
     SDL_SaveBMP(cut_image, name);
 }
