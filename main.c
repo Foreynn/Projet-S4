@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+// N'a ete pour l'instant concu que pour les labyrinthes de format carre.
+
 int main() {
 
     char *filename = "neuralNetwork/output.csv";
@@ -15,9 +17,13 @@ int main() {
         return 1;
     }
 
-    int n; // total number of case.
-    int r; // total number of line.
-    int c; // total number of column.
+// TODO : avoir automatiquement les dimensions (utiliser le nombre de ligne du fichier output.csv ?)
+
+    int r = 5; // total number of line.
+
+    // On a un carre donc c = r.
+    int c = r; // total number of column.
+    int n = r * c; // total number of case.
 
     SIZE = n; // We copie n in SIZE.
 
@@ -30,6 +36,7 @@ int main() {
     const unsigned MAX_LENGTH = 256;
     char buffer[MAX_LENGTH];
 
+    // #### D'ici a 
     for (int i = 0; fgets(buffer, MAX_LENGTH, fp); i++) {
         int number = atoi(buffer);
         int degre;
@@ -75,30 +82,40 @@ int main() {
                 arr[1] = LEFT;
                 break;
             case 9:
+                degre = 2;
+                arr[0] = UP;
+                arr[1] = DOWN;
+                break;
+            case 10:
+                degre = 2;
+                arr[0] = LEFT;
+                arr[1] = RIGHT;
+                break;
+            case 11:
                 degre = 3;
                 arr[0] = LEFT;
                 arr[1] = UP;
                 arr[2] = RIGHT;
                 break;
-            case 10:
+            case 12:
                 degre = 3;
                 arr[0] = UP;
                 arr[1] = RIGHT;
                 arr[2] = DOWN;
                 break;
-            case 11:
+            case 13:
                 degre = 3;
                 arr[0] = RIGHT;
                 arr[1] = LEFT;
                 arr[2] = DOWN;
                 break;
-            case 12:
+            case 14:
                 degre = 3;
                 arr[0] = DOWN;
                 arr[1] = LEFT;
                 arr[2] = UP;
                 break;
-            case 13:
+            case 15:
                 degre = 4;
                 arr[0] = LEFT;
                 arr[1] = UP;
@@ -107,32 +124,40 @@ int main() {
                 break;
         }
 
-        trncns[i/n][i%n].dgr = degre;
-        trncns[i/n][i%n].accs = malloc(sizeof(int) * degre);
-        trncns[i/n][i%n].parcourue = 0;
-        for(int i = 0; i < degre; i++)
-            trncns[i/n][i%n].accs[i] = arr[i];
+        // printf("x : %i\ny: %i\n(%i)\n", i/r, i%c, number);
+        
+        // On remplit trncns colonne par colonne.
+        trncns[i/r][i%c].dgr = degre;
+        trncns[i/r][i%c].parcourue = 0;
+       
+        trncns[i/r][i%c].accs = malloc(sizeof(enum direction) * degre);
+        // printf("Case [x: %i][y: %i] :\n", i/r, i%c);
+        for(int j = 0; j < degre; j++) {
+            trncns[i/r][i%c].accs[j] = arr[j];
+            // printf("Possibilite %i: %i\n", j, trncns[i/r][i%c].accs[j]);
+        }
+        // a la, c'est ok.
     }
 
     // We create the exit of our maze test.
-    srt.x = 0;
+    srt.x = 2;
     srt.y = 4;
 
     // Where to stock the solution of the maze.
-    chemin_trouve = malloc(sizeof(struct trncn *) * 15);
+    chemin_trouve = malloc(sizeof(struct trncn *) * n);
     memset(chemin_trouve, 0, sizeof(struct trncn *));
 
     // We choose an entry point.
-    struct point entry = {.x = 0, .y = 0}; 
+    struct point entry = {.x = 2, .y = 0}; 
 
     // We run our solver.
     get_chemin(entry);
 
     printf("\nSolution: \n");
     // printf("%i", found_size);
-    for(int s = 0; s < SIZE; s++) {
-        for(int i = 0; i < 3; i++) {
-            for(int j = 0; j < 5; j++) {
+    for(int s = 0; s < n; s++) {
+        for(int i = 0; i < c; i++) {
+            for(int j = 0; j < r; j++) {
                 if (chemin_trouve[s] == &trncns[i][j]) {
                     printf("\t · case[%i][%i]", i, j);
                     if (i == entry.x && j == entry.y)
