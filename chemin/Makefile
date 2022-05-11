@@ -3,9 +3,9 @@ CFLAGS = -Wall -Wextra -Werror -std=c99 -g
 
 all : main
 
-main: main.o chemin.o
-chemin.o : chemin.h trncn.h
+main: main.o path_finder.o
+path_finder.o : path_finder.h tile.h
 
 .PHONY : clean
 clean :
-	rm *.o
+	rm *.o main
