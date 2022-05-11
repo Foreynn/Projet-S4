@@ -1,57 +1,66 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stddef.h>
-#include <math.h>
-#include "model_training.h"
 #include "model.h"
-
 
 double recognition(double input[])
 {
-    // Layers
-    double hiddenLayer[9*9];
-    double outputLayer[1];
-    
-    double hiddenLayerBias[9*9];
-    double outputLayerBias[1];
+    int up = 0;
+    int left = 0;
+    int right = 0;
+    int down = 0;
 
-    double hiddenWeights[9*9][9*9];
-    double outputWeights[9*9][1];
 
-    FILE *g = fopen("weights/outputLayerBias.data", "r +");
-    fread(outputLayerBias, sizeof(double), sizeof(outputLayerBias)/sizeof(double), g);
-    fclose(g);
-    
-    FILE *f = fopen("weights/hiddenLayerBias.data", "r +");
-    fread(hiddenLayerBias, sizeof(double), sizeof(hiddenLayerBias)/sizeof(double), f);
-    fclose(f);
+    if (input[4] == -0.5)
+        up = 1;
+    if (input[4*9] == -0.5)
+        left = 1;
+    if (input[5*9 - 1] == -0.5)
+        right = 1;
+    if (input[9*9 - 4] == -0.5)
+        down = 1;
 
-    FILE *h = fopen("weights/hiddenWeights.data", "r +");
-    fread(hiddenWeights, sizeof(double), sizeof(hiddenWeights)/sizeof(double), h);
-    fclose(h);
 
-    FILE *i = fopen("weights/outputWeights.data", "r +");
-    fread(outputWeights, sizeof(double), sizeof(outputWeights)/sizeof(double), i);
-    fclose(i);
-
-    for (int j=0; j<9*9; j++)
+    if (up)
     {
-        double activation=hiddenLayerBias[j];
-        for (int k=0; k<9*9; k++)
+        if (left)
         {
-            activation+=input[k]*hiddenWeights[k][j];
+            if (right)
+            {
+                if (down)
+                    return FOUR_WAY;
+                return LEFT_UP_RIGHT;
+            }
+            if (down)
+                return LEFT_UP_DOWN;
+            return LEFT_UP;
         }
-        hiddenLayer[j] = sigmoid(activation);
+        if (right)
+        {
+            if (down)
+                return UP_RIGHT_DOWN;
+            return UP_RIGHT;
+        }
+        if (down)
+            return UP_DOWN;
+        return UP;
     }
-    
-    for (int j=0; j<1; j++)
+    if (left)
     {
-        double activation=outputLayerBias[j];
-        for (int k=0; k<9*9; k++)
+        if (right)
         {
-            activation+=hiddenLayer[k]*outputWeights[k][j];
+            if (down)
+                return LEFT_RIGHT_DOWN;
+            return LEFT_RIGHT;
         }
-        outputLayer[j] = relu(activation);
+        if (down)
+            return LEFT_DOWN;
+        return LEFT;
     }
-    return outputLayer[0];
+    if (down)
+    {
+        if (right)
+            return RIGHT_DOWN;
+        return DOWN;
+    }
+    if (right)
+        return RIGHT;
+    return ZERO_WAY;
 }

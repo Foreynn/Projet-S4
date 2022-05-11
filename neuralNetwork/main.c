@@ -1,8 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stddef.h>
 #include <math.h>
-#include "model_training.h"
 #include "model.h"
 #include "imgToArray.h"
 
