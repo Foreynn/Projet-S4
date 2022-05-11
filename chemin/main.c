@@ -8,7 +8,7 @@
 
 int main() {
 
-    char *filename = "neuralNetwork/output.csv";
+    char *filename = "../neuralNetwork/output.csv";
     FILE *fp = fopen(filename, "r");
 
     if (fp == NULL)
