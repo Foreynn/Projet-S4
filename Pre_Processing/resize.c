@@ -85,7 +85,7 @@ int main(int argc, char** argv){
     new_image = size_reduction(image,9,9);
 
     // Save the new image
-    SDL_SaveBMP(new_image, "reduced_size.bmp");
+    SDL_SaveBMP(new_image, argv[1]);
 
     // Free allocated memory
     SDL_FreeSurface(image);
