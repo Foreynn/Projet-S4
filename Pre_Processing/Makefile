@@ -1,26 +1,23 @@
-#My Makefile
-
-CC = gcc
+CC=gcc
 CPPFLAGS= `pkg-config --cflags sdl` -MMD
-CFLAGS= -Wall -Wextra -Werror -std=c99 -O3
-LDFLAGS=
+CFLAGS= -Wall -Wextra -std=c99 -O3 -g -fsanitize=address
+LDFLAGS= -lm -ldl
 LDLIBS= `pkg-config --libs sdl SDL_image`
 
-all: display decoupage grayscale
+SRC= pixel_operations.c main.c
 
-decoupage: decoupage.o pixel_operations.o
-display: display.o
-grayscale: grayscale.o pixel_operations.o
+OBJ= $(SRC:%.c=%.o)
+DEP= ${SRC:.c=.d}
+PRG= ${SRC:.c=.out}
 
-decoupage.o: decoupage.c
-pixel_operations.o: pixel_operations.c
-display.o: display.c
-grayscale.o: grayscale.c
+all: rule
+
+rule: $(OBJ)
+	$(CC) -o main.out $(CFLAGS) $^ $(LDFLAGS) $(LDLIBS)
+
+-include ${DEP}
 
 clean:
-	${RM} *.o
-	${RM} *.d
-	${RM} decoupage
-	${RM} display
-	${RM} grayscale
-# END
+	rm -f *.o
+	rm -f *.d
+	rm -f ${PRG}

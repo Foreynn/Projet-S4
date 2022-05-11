@@ -5,7 +5,6 @@
 #include <err.h>
 #include <string.h>
 #include "pixel_operations.h"
-#include "resize.h"
 
 void init_sdl()
 {
@@ -14,7 +13,6 @@ void init_sdl()
     if(SDL_Init(SDL_INIT_VIDEO) == -1)
         errx(1,"Could not initialize SDL: %s.\n", SDL_GetError());    
 }
-
 SDL_Surface* load_image(char *path)
 {
     //An image is represented by a surface
@@ -29,8 +27,52 @@ SDL_Surface* load_image(char *path)
     return img;
 }
 
-// This function returns the size of a case (the width or height since it's
-// a square) and the size of the border int the borderSize argument.
+
+//! Resize functions (compress, size_reduciton)
+Uint32 compress(SDL_Surface *image, int w, int h, double ratio_w, double ratio_h)
+{
+    int nb_black = 0;
+
+    for (int x = ratio_w * w; x < ratio_w * (w+1); x++)
+    {
+        for (int y = ratio_h * h; y < ratio_h * (h+1); y++)
+        {
+            Uint32 pixel = get_pixel(image, x, y);
+            Uint8 r, g, b;
+            SDL_GetRGB(pixel, image->format, &r, &g, &b);
+            if (r != 255 || g != 255 || b != 255)
+                nb_black++;
+        }
+    }
+
+    if (nb_black > 0)
+        return SDL_MapRGBA(image->format, 0, 0, 0, 0);
+    return SDL_MapRGBA(image->format, 255, 255, 255, 0);
+}
+
+SDL_Surface* size_reduction(SDL_Surface * image, double W, double H)
+{
+    double og_width = image->w;
+    double og_height = image->h;
+
+    double ratio_w = og_width / W;
+    double ratio_h = og_height / H;
+
+    SDL_Surface *new_image = SDL_CreateRGBSurface(0, W, H, 32, 255, 255, 255, 0);
+    for (int x = 0; x < W; x++)
+    {
+        for (int y = 0; y < H; y++)
+        {
+            Uint32 pixel = compress(image, x, y, ratio_w, ratio_h);
+            put_pixel(new_image, x, y, pixel);
+        }
+    }
+    
+    return new_image;
+}
+
+
+//! Segmentation functions (getDimension)
 unsigned int getDimension(SDL_Surface *img, int *borderSize)
 {
     unsigned int size = 0;
@@ -60,8 +102,28 @@ unsigned int getDimension(SDL_Surface *img, int *borderSize)
     return size;
 }
 
-// This function saves an image (the case corresponding to the given
-// coordinates) to a file named cut_images_XXXX.bmp.
+
+//! Preprocessing functions (blackAndWhite, saveImg)
+void blackAndWhite(SDL_Surface* image_surface)
+{
+    int width = image_surface->w;
+    int height = image_surface->h;
+
+    for (int i = 0; i < width; i++)
+    {
+        for (int j = 0; j < height; j++)
+        {
+            Uint32 pixel = get_pixel(image_surface, i, j);
+            Uint8 r, g, b;
+            SDL_GetRGB(pixel, image_surface->format, &r, &g, &b);
+            if (r != 255 && g != 255 && b != 255)
+                r = g = b = 0;
+            pixel = SDL_MapRGB(image_surface->format, r, g, b);
+            put_pixel(image_surface, i, j, pixel);
+        }
+    }
+}
+
 void saveImg(SDL_Surface *img, int x, int y, int size, char* name)
 {
     SDL_Rect srcrect = { x, y, size, size };
@@ -69,67 +131,23 @@ void saveImg(SDL_Surface *img, int x, int y, int size, char* name)
 
     SDL_BlitSurface(img, &srcrect, cut_image, NULL);
 
-    SDL_Surface *new_image;
-    new_image = size_reduction(cut_image, 9, 9);
+    cut_image = size_reduction(cut_image, 9, 9);
 
-    cut_image = new_image;
-
-    free(new_image);
+    blackAndWhite(cut_image);
 
     SDL_SaveBMP(cut_image, name);
+    free(cut_image);
 }
 
-SDL_Surface *display_image(SDL_Surface *img)
+
+//! Main function: gets an inmage of a maze and cuts it into small 9x9 black and white images.
+int main(void)
 {
-    SDL_Surface *screen;
-    //it's through the window that we can display the image/surface
-    //Set the window to the same size as the image/surface
-    screen = SDL_SetVideoMode(1920,1080, 0, SDL_SWSURFACE|SDL_ANYFORMAT);
-    if (screen == NULL)
-    {
-        //handle error
-        errx(1,"Couldn' set %dx%d video mode : %s\n",img->w, img->h,SDL_GetError());
-    }
-    //We color the screen in blue-green
-    if ( SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 17, 206, 112)) != 0)
-        errx(1,"Could not color the screen : %s\n", SDL_GetError());
-
-    //We paste the SDL_Surface representing img on SDL_Surface representing the screen
-    if(SDL_BlitSurface(img, NULL, screen, NULL) < 0)
-        warnx("BlitSurface error: %s\n", SDL_GetError());
-
-    //We update the screen
-    SDL_Flip(screen);
-    return screen;
-
-}
-
-void wait_for_keypressed()
-{
-    SDL_Event event;
-
-    // Wait for a key to be down.
-    do
-    {
-        SDL_PollEvent(&event);
-    } while(event.type != SDL_KEYDOWN);
-
-    // Wait for a key to be up.
-    do
-    {
-        SDL_PollEvent(&event);
-    } while(event.type != SDL_KEYUP);
-}
-
-int main()
-{
-    SDL_Surface *screen;
     SDL_Surface *image_surface;
 
     init_sdl();
 
     image_surface = load_image("image/maze5x5.png");
-    screen = display_image(image_surface);
 
     int borderSize = 0;
     unsigned int size = getDimension(image_surface, &borderSize);
@@ -139,7 +157,7 @@ int main()
         for (int j = borderSize/2; j < image_surface->w-1; j += size)
         {
             char* name;
-            asprintf(&name, "../../cut_images/%04d.bmp", n);
+            asprintf(&name, "../cut_images/%04d.bmp", n);
 
             saveImg(image_surface, i, j, size, name);
             n++;
@@ -148,8 +166,6 @@ int main()
 
     printf("The dimension of a case is: %ux%u pixels.\nThe border is %i pixels wide\n", size, size, borderSize);
 
-    wait_for_keypressed();
     SDL_FreeSurface(image_surface);
-    SDL_FreeSurface(screen);
     SDL_Quit();
 }
