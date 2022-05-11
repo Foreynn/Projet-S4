@@ -30,7 +30,7 @@ int main(int argc, char** argv)
     for (size_t i = 0; i < size; i++)
     {
         printf("%.0f | ", round(outputs[i]));
-        fprintf(f, "%.0f, ", round(outputs[i]));
+        fprintf(f, "%.0f\n", round(outputs[i]));
     }
     fclose(f);
 
