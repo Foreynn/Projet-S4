@@ -1,6 +1,4 @@
-#include <err.h>
-#include <string.h>
-#include "imgToArray.h"
+#include "../imgToArray.h"
 
 void init_sdl()
 {

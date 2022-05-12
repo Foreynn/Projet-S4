@@ -1,4 +1,5 @@
 #include "model.h"
+#include "imgToArray.h"
 
 double recognition(double input[])
 {
@@ -63,4 +64,23 @@ double recognition(double input[])
     if (right)
         return RIGHT;
     return ZERO_WAY;
+}
+
+void neuralNetwork(size_t size)
+{
+    double *inputs;
+    double outputs[size*size];
+    
+    for (size_t i = 0; i < size*size; i++)
+    {
+        inputs = ImageToList(i);
+        outputs[i] = recognition(inputs);
+    }
+    
+    FILE *f = fopen("output.csv", "w+");
+    for (size_t i = 0; i < size*size; i++)
+    {
+        fprintf(f, "%.0f\n", round(outputs[i]));
+    }
+    fclose(f);
 }

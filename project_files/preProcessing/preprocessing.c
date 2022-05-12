@@ -1,10 +1,5 @@
-#include "SDL/SDL.h"
-#include "SDL/SDL_image.h"
-#include <stdlib.h>
-#include <stdio.h>
-#include <err.h>
-#include <string.h>
-#include "pixel_operations.h"
+#include "preprocessing.h"
+#include "../pixel_operations.h"
 
 void init_sdl()
 {
@@ -141,16 +136,11 @@ void saveImg(SDL_Surface *img, int x, int y, int size, char* name)
 
 
 //! Main function: gets an inmage of a maze and cuts it into small 9x9 black and white images.
-int main(void)
+unsigned int pre_processing(SDL_Surface *image_surface)
 {
-    SDL_Surface *image_surface;
-
-    init_sdl();
-
-    image_surface = load_image("image/maze5x5.png");
-
     int borderSize = 0;
     unsigned int size = getDimension(image_surface, &borderSize);
+    
     int n = 0;
     for (int i = borderSize/2; i < image_surface->h-1; i += size)
     {
@@ -164,8 +154,5 @@ int main(void)
         }
     }
 
-    printf("The dimension of a case is: %ux%u pixels.\nThe border is %i pixels wide\n", size, size, borderSize);
-
-    SDL_FreeSurface(image_surface);
-    SDL_Quit();
+    return size;
 }

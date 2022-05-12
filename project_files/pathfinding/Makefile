@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -std=c99 -g
+CFLAGS = -Wall -std=c99 -g
 
 all : main
 
@@ -9,3 +9,4 @@ chemin.o : chemin.h trncn.h
 .PHONY : clean
 clean :
 	rm *.o
+	rm main
