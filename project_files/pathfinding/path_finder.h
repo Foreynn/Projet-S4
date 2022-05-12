@@ -1,8 +1,8 @@
 #ifndef PATH_FINDER_H
 #define PATH_FINDER_H
 
-// SRFC is an abreviation for SURFACE.
-// (We've merely kept the consonants.)
+/* SRFC is an abreviation for SURFACE.
+ * (We've merely kept the consonants.) */
 int SRFC;
 
 struct tile **tiles;
