@@ -12,10 +12,10 @@ int main() {
 
     char *filename = "../neuralNetwork/output.csv";
 
+    char IO_detection = 1;  // cf. the comment in the for loop.
+
     FILE *fp;
-
     int count_lines = 0;
-
     char chr;
 
     fp = fopen(filename, "r");
@@ -70,7 +70,7 @@ int main() {
 
     for (int i = 0; fgets(buffer, MAX_LENGTH, fp); i++) {
         int number = atoi(buffer);
-        int degree;
+        size_t degree;
         int arr[4];
         switch (number) {
             case 0:
@@ -155,27 +155,43 @@ int main() {
                 break;
         }
 
-        /* 
+        /* If IO_detection set to 1 :
+         *
          * Try to auto-detect entry and exit points ("IO tile") of the maze.
          * If a tile is on a side of the maze and has an outward
          * opening then this tile is considered as an "IO tile".
-        */
+         */
 
         // If we have an IO on the left side of the maze.
         if (i/r == 0) {
             switch(number) {
                 case 5: case 8: case 10: case 11:
                 case 13: case 14: case 15:
-                    if (nmbrIO == 0) {
-                        entry.x = 0;
-                        entry.y = i%r;
+
+                    // We prevent going outside the maze.
+                    for (size_t k = 0, stay_in = 0; k < degree - stay_in; k++) {
+                        if (arr[k] == LEFT || stay_in) {
+                            if (k < degree - 1)
+                                arr[k] = arr[k+1];
+                            stay_in = 1;
+                        }
+                    } 
+                    degree--;
+
+                    // If IO detection activated.
+                    if (IO_detection) {
+                        if (nmbrIO == 0) {
+                            entry.x = 0;
+                            entry.y = i%r;
+                        }
+                        else if (nmbrIO == 1) {
+                            xt.x = 0;
+                            xt.y = i%r;
+                        }
+                        nmbrIO++;
+                        // printf("[0][%i] (number: %i)\n", i%r, number);
                     }
-                    else if (nmbrIO == 1) {
-                        xt.x = 0;
-                        xt.y = i%r;
-                    }
-                    nmbrIO++;
-                    // printf("[0][%i] (number: %i)\n", i%r, number);
+
                     break;
                 default: break;
             }
@@ -186,36 +202,67 @@ int main() {
             switch(number) {
                 case 6: case 7: case 10: case 11:
                 case 12: case 13: case 15:
-                    if (nmbrIO == 0) {
-                        entry.x = c - 1;
-                        entry.y = i%r;
+
+                    // We prevent going outside the maze.
+                    for (size_t k = 0, stay_in = 0; k < degree - stay_in; k++) {
+                        if (arr[k] == RIGHT || stay_in) {
+                            if (k < degree - 1)
+                                arr[k] = arr[k+1];
+                            stay_in = 1;
+                        }
+                    } 
+                    degree--;
+
+                    // If IO detection activated.
+                    if (IO_detection) {
+                        if (nmbrIO == 0) {
+                            entry.x = c - 1;
+                            entry.y = i%r;
+                        }
+                        else if (nmbrIO == 1) {
+                            xt.x = c - 1;
+                            xt.y = i%r;
+                        }
+                        nmbrIO++;
+                        // printf("[%i][%i] (number: %i)\n", c - 1, i%r, number);
                     }
-                    else if (nmbrIO == 1) {
-                        xt.x = c - 1;
-                        xt.y = i%r;
-                    }
-                    nmbrIO++;
-                    // printf("[%i][%i] (number: %i)\n", c - 1, i%r, number);
+
                     break;
                 default: break;
             }
         }
-       
+
         // If we have an IO on the top side of the maze.
         if (i%r == 0) {
             switch(number) {
                 case 5: case 6: case 9: case 11:
                 case 12: case 14: case 15:
-                    if (nmbrIO == 0) {
-                        entry.x = i/r;
-                        entry.y = 0;
+
+                    // We prevent going outside the maze.
+                    for (size_t k = 0, stay_in = 0; k < degree - stay_in; k++) {
+                        if (arr[k] == UP || stay_in) {
+                            if (k < degree - 1)
+                                arr[k] = arr[k+1];
+                            stay_in = 1;
+                        }
+                    } 
+                    degree--;
+
+                    // If IO detection activated.
+                    if (IO_detection) {
+
+                        if (nmbrIO == 0) {
+                            entry.x = i/r;
+                            entry.y = 0;
+                        }
+                        else if (nmbrIO == 1) {
+                            xt.x = i/r;
+                            xt.y = 0;
+                        }
+                        nmbrIO++;
+                        // printf("[%i][0] (number: %i)\n", i/r, number);
                     }
-                    else if (nmbrIO == 1) {
-                        xt.x = i/r;
-                        xt.y = 0;
-                    }
-                    nmbrIO++;
-                    // printf("[%i][0] (number: %i)\n", i/r, number);
+
                     break;
                 default: break;
             }
@@ -226,16 +273,32 @@ int main() {
             switch(number) {
                 case 7: case 8: case 9: case 12:
                 case 13: case 14: case 15:
-                    if (nmbrIO == 0) {
-                        entry.x = i/r;
-                        entry.y = r - 1;
+
+                    // We prevent going outside the maze.
+                    for (size_t k = 0, stay_in = 0; k < degree - stay_in; k++) {
+                        if (arr[k] == DOWN || stay_in) {
+                            if (k < degree - 1)
+                                arr[k] = arr[k+1];
+                            stay_in = 1;
+                        }
+                    } 
+                    degree--;
+
+                    // If IO detection activated.
+                    if (IO_detection) {
+
+                        if (nmbrIO == 0) {
+                            entry.x = i/r;
+                            entry.y = r - 1;
+                        }
+                        else if (nmbrIO == 1) {
+                            xt.x = i/r;
+                            xt.y = r - 1;
+                        }
+                        nmbrIO++;
+                        // printf("[%i][%i] (number: %i)\n", i/r, r - 1, number);
                     }
-                    else if (nmbrIO == 1) {
-                        xt.x = i/r;
-                        xt.y = r - 1;
-                    }
-                    nmbrIO++;
-                    // printf("[%i][%i] (number: %i)\n", i/r, r - 1, number);
+
                     break;
                 default: break;
             }
@@ -246,21 +309,21 @@ int main() {
         tiles[i/r][i%r].traveled = 0;
 
         tiles[i/r][i%r].accs = malloc(sizeof(enum direction) * degree);
-        for(int j = 0; j < degree; j++)
+        for(size_t j = 0; j < degree; j++)
             tiles[i/r][i%r].accs[j] = arr[j];
     }
 
-    if (nmbrIO != 2) {
-        
+    if (IO_detection && nmbrIO != 2) {
+
         if (nmbrIO > 2)
             printf("Erreur. nmbrIO > 2.\n");
         else
             printf("Erreur. nmbrIO < 2.\n");
-        
+
         errx(EXIT_FAILURE, "Indiquer manuellement au programme\
                 ou sont les points d'entree et de sortie\
                 permettrait au programme de continuer.");
-        
+
         // We could do a scanf to manually get entry and exit points.
     }
 
@@ -279,11 +342,11 @@ int main() {
                 if (path_found[s] == &tiles[i][j]) {
                     printf("\t · case[%i][%i]", i, j);
                     /*
-                    if (i == entry.x && j == entry.y)
-                        printf(" (point A)");
-                    else if (i == xt.x && j == xt.y)
-                        printf(" (point B)");
-                    */
+                       if (i == entry.x && j == entry.y)
+                       printf(" (point A)");
+                       else if (i == xt.x && j == xt.y)
+                       printf(" (point B)");
+                       */
                     printf("\n");
                     break;
                 }
