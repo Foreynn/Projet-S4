@@ -26,6 +26,6 @@ typedef enum
 	FOUR_WAY,
 } blocks;
 
-double recognition(double input[]);
+void neuralNetwork(size_t size);
 
 #endif
