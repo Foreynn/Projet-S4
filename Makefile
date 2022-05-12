@@ -1,4 +1,4 @@
-CC = gcc
+CC = gcc -lm
 CFLAGS = -Wall -Wextra -Werror -std=c99 -g
 
 all : main
