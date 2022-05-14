@@ -1,4 +1,15 @@
 #include <gtk/gtk.h>
+#include "../neuralnetwork/model.h"
+#include "../pathfinding/pathfinding.h"
+#include "../preprocessing/preprocessing.h"
+
+void solve(SDL_Surface* image)
+{
+    size_t size = pre_processing(image); //* Crée les images decoupées dans cut_images et retourne la taille du labyrinthe.
+    neuralNetwork(size); //* Enregistre les valeurs des cases dans output.csv
+    pathfinding(size, entrance_coords, exit_coords); //* Eregistre le chemin dans un fichier solution
+    // tracePath(solution); //* Trace le chemin sur le labyrinthe
+}
 
 // Main function.
 int main (int argc, char *argv[])
