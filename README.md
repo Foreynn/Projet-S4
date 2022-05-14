@@ -18,12 +18,7 @@ Our software accepts labyrinth files in the form of an image. Labyrinths must ha
 
 ### How to solve
 
-In order to solve the labyrinth, you must enter the entrance and exit coordinates (`(x, y)`) into the software. These coordinates start at `(0, 0)` in the top-left corner of the maze, `x` grows as you go down in the column and `y` grows as you go to the right of the row.
-
-Then, you simply need to press the solve button.
-
-### Outputs:
-If you want to save the solved maze, you only need to press the save button.
+In order to solve the labyrinth, you simply need to press the solve button.
 
 ## How to remove our software
 
