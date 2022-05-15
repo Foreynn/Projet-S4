@@ -1,0 +1,66 @@
+<DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>Projet S4 - Gustav.B, Julien.A - EPITA 2022</title>
+</head>
+
+<body>
+    <h1 style="border-bottom: 1px black dotted; margin-bottom: 15px;">Projet S4</h1>
+    <body>
+        <h2>Présentation</h2>
+        <p>Notre projet de S4 est un programme résolvant un labyrinthe donné ; associés au labyrinthe, une entrée et une sortie sont fournit au programme par l'utilisateur.<br>
+        Le programme renvoie le chemin, s'il existe, allant de l'entrée à la sortie. Le format du chemin retourné par le programme est prévu pour être <strong><em>json</em></strong>, afin d'être plus facilement manipulable, analysable.<br>
+        En entrée, les labyrinthes acceptés par le programmes suivre les règles suivantes : 
+        <ol>
+            <li>Le labyrinthe doit être sous format <strong><em>jpg</em></strong> ou <strong><em>png</em></strong>.</li>
+            <li>L'image : ne contenir que le labyrinthe. Pas de parasites graphiques.</li>
+            <li>La qualité de l'image doit être suffisante pour que le réseau de neurones ne se trompe quant à la reconnaissance du labyrinthe (un seuil de qualité pourra éventuellement être donné par la suite).</li>
+        </ol>
+        Le fonctionnement du programme repose sur deux choses principales, un réseau de neurones et un algorithme de résolution de labyrinthe :<br>
+        <ol>
+            <li>L'utilisateur fournit au programme un fichier correspondant à un labyrinthe, fichier accepté par le programme (cf. les critères à respecter ci-dessus).</li>
+            <li>Le programme analyse le fichier à l'aide du réseau de neurones de sorte à pouvoir indiquer à l'algorithme de résolution à quoi resemble le labyrinthe, pour plus d'informations à ce sujet voir le rapport de soutenance.</li>
+            <li>L'algorithme de résolution de chemin utilise les informations données par le réseau de neurones pour trouver le chemin, s'il existe, entre l'entrée et la sortie données par l'utilisateur.</li>
+            <li>L'algorithme de résolution renvoie le chemin (une fois encore: s'il la trouvé) sous format <strong><em>json</em></strong>.</li>
+        </ol>
+        </p>
+        <h3>Historique :</h3>
+        <ul style="list-style-type: none;"><span style="text-decoration:underline;">2ème soutenance (11/04/22)</span> :
+            <li>- site web complet</li>
+            <li>- avancée concernant l'expérience utilisateur</li>
+        </ul>
+        <ul style="list-style-type: none;"><span style="text-decoration:underline;">1ère soutenance (16/03/22)</span> :
+            <li>- réseau de neurone fonctionnel</li>
+            <li>- alogrithme de recherche de chemin fonctionnel</li>
+        </ul>
+        <h3>Problème rencontrés :</h3>
+        <ul>
+            <li>
+                <strong>Librairie GTK</strong> : <br>
+                Il fut prévu que nous fassions une interface graphique pour rendre le programme plus ergonomique. GTK fut choisit pour développer l'interface.<br><br>
+                Il s'est avéré néanmoins que  l'installation de cette librairie n'a pas réussi sur 3h de temps, après avoir essayé de 3 manières différentes (apt-get, manuellement, homebrew), sur 2 systèmes d'exploitations différents (Ubuntu, macOS).
+                <br> <br>
+                Face à une telle situation, Gustav ne veut rien avoir en commun avec GTK, ne veut pas l'utiliser ni y toucher. Cette librairie, n'est-ce pas une abomination à ses yeux ? "Il la hait" dit-il. Enfin.
+                <br><br>
+                C'est pourquoi, moi Gustav, je suis d'avis à cette étape du projet de ne pas faire d'interface grapghique, mais plutôt une application en invité de commande. Je préfère avoir un programme qui fonctionne, un programme "béton", qui ne soit pas forcément esthétique, plutôt qu'un programme qui a été travaillé du point de vue graphique mais qui fonctionne à moitié, une fois sur trois.
+            </li><br>
+            <li><strong>Synchronisation du réseau de neurones avec l'algorithme de recherche de chemin</strong> :<br>
+                Nous avons eu quelques soucis concernant les entrées/sorties pour liés les deux parties du programme.
+            </li>
+        </ul>
+        <h3>Librairies utilisées :</h3>
+        <p>Aucune qui soit pour l'instant à relever.</p>
+        <h3>Livrables :</h3>
+        <ul>
+            <li><a href="https://github.com/Foreynn/Projet-S4/tree/main/prg.zip">Télécharger le projet ici.</a></li>
+            <li><a href="https://github.com/Foreynn/Projet-S4/tree/main">Accès au code</a></li>
+            <li><a href="https://github.com/Foreynn/Projet-S4/tree/main/rapport.pdf">Rapport de soutenance (11/04/22)</a></li>
+        </ul>
+        <footer style="border-top: 1px black dotted;">
+            <h4>Membres du projet:</h4>
+            <ul>
+                <li>Julien Auzanneau</li>
+                <li>Gustav Berloty</li>
+            </ul>
+        </footer>
+    </body>
