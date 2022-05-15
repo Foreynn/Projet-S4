@@ -1,12 +1,13 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <err.h>
+#include <math.h>
+#include <string.h>
 #include "tile.h"
 #include "path_finder.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
-#include <err.h>
 
-// Only for "square" mazes.
+
+// Only for "square" mazes that have no more than 4 294 967 295 tiles in height.
 
 int main() {
 
@@ -15,7 +16,7 @@ int main() {
     char IO_detection = 1;  // cf. the comment in the for loop.
 
     FILE *fp;
-    int count_lines = 0;
+    unsigned long long count_lines = 0;
     char chr;
 
     fp = fopen(filename, "r");
@@ -46,17 +47,17 @@ int main() {
 
     fp = fopen(filename, "r");
 
-    int r = (int) sqrt(count_lines);  // r : total number of line.
+    unsigned long r = sqrt(count_lines);  // r : total number of line.
 
     // Having a square, we state c = r.
-    int c = r;  // c : total number of column.
+    unsigned long c = r;  // c : total number of column.
 
     /* SRFC is an abreviation for SURFACE.
      * (We've merely kept the consonants.) */
     SRFC = r * c;
 
     tiles = malloc(sizeof(struct tile *) * c);
-    for (int i = 0; i < c; i++)
+    for (unsigned long i = 0; i < c; i++)
         tiles[i] = malloc(sizeof(struct tile) * r);
 
     // Reading line by line, max 256 bytes.
@@ -66,12 +67,12 @@ int main() {
     struct point entry = {.x = 0, .y = 0};
 
     // Found number of potential entrance or exit.
-    int nmbrIO = 0;
+    long long nmbrIO = 0;
 
-    for (int i = 0; fgets(buffer, MAX_LENGTH, fp); i++) {
-        int number = atoi(buffer);
-        size_t degree;
-        int arr[4];
+    for (unsigned long long i = 0; fgets(buffer, MAX_LENGTH, fp); i++) {
+        char number = atoi(buffer);
+        char degree;
+        char arr[4];
         switch (number) {
             case 0:
                 degree = 0;
@@ -169,7 +170,7 @@ int main() {
                 case 13: case 14: case 15:
 
                     // We prevent going outside the maze.
-                    for (size_t k = 0, stay_in = 0; k < degree - stay_in; k++) {
+                    for (unsigned char k = 0, stay_in = 0; k < degree - stay_in; k++) {
                         if (arr[k] == LEFT || stay_in) {
                             if (k < degree - 1)
                                 arr[k] = arr[k+1];
@@ -204,7 +205,7 @@ int main() {
                 case 12: case 13: case 15:
 
                     // We prevent going outside the maze.
-                    for (size_t k = 0, stay_in = 0; k < degree - stay_in; k++) {
+                    for (unsigned char k = 0, stay_in = 0; k < degree - stay_in; k++) {
                         if (arr[k] == RIGHT || stay_in) {
                             if (k < degree - 1)
                                 arr[k] = arr[k+1];
@@ -239,7 +240,7 @@ int main() {
                 case 12: case 14: case 15:
 
                     // We prevent going outside the maze.
-                    for (size_t k = 0, stay_in = 0; k < degree - stay_in; k++) {
+                    for (unsigned char k = 0, stay_in = 0; k < degree - stay_in; k++) {
                         if (arr[k] == UP || stay_in) {
                             if (k < degree - 1)
                                 arr[k] = arr[k+1];
@@ -275,7 +276,7 @@ int main() {
                 case 13: case 14: case 15:
 
                     // We prevent going outside the maze.
-                    for (size_t k = 0, stay_in = 0; k < degree - stay_in; k++) {
+                    for (unsigned char k = 0, stay_in = 0; k < degree - stay_in; k++) {
                         if (arr[k] == DOWN || stay_in) {
                             if (k < degree - 1)
                                 arr[k] = arr[k+1];
@@ -309,7 +310,7 @@ int main() {
         tiles[i/r][i%r].traveled = 0;
 
         tiles[i/r][i%r].accs = malloc(sizeof(enum direction) * degree);
-        for(size_t j = 0; j < degree; j++)
+        for(unsigned char j = 0; j < degree; j++)
             tiles[i/r][i%r].accs[j] = arr[j];
     }
 
@@ -336,11 +337,11 @@ int main() {
 
     printf("\nSolution: \n");
     // printf("%i", found_size);
-    for(int s = 0; s < SRFC; s++)
-        for(int i = 0; i < c; i++)
-            for(int j = 0; j < r; j++)
+    for(unsigned long long s = 0; s < SRFC; s++)
+        for(unsigned long i = 0; i < c; i++)
+            for(unsigned long j = 0; j < r; j++)
                 if (path_found[s] == &tiles[i][j]) {
-                    printf("\t · case[%i][%i]", i, j);
+                    printf("\t · case[%lu][%lu]", i, j);
                     /*
                        if (i == entry.x && j == entry.y)
                        printf(" (point A)");
