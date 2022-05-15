@@ -10,11 +10,7 @@
 
 void pathfinding() {
 
-    /* 
-     * Warning: The url below might need to change
-     * according to the location where the code is executed.
-    */
-    char *filename = "project_files/neuralNetwork/output.csv";
+    char *filename = "output.csv";
 
     char IO_detection = 1;  // cf. the comment in the for loop.
 
@@ -74,7 +70,7 @@ void pathfinding() {
 
     for (unsigned long long i = 0; fgets(buffer, MAX_LENGTH, fp); i++) {
         char number = atoi(buffer);
-        char degree;
+        char degree = 0;
         char arr[4];
         switch (number) {
             case 0:
@@ -317,8 +313,6 @@ void pathfinding() {
             tiles[i/r][i%r].accs[j] = arr[j];
     }
 
-    fclose(fp); // Close the file.
-
     if (IO_detection && nmbrIO != 2) {
 
         if (nmbrIO > 2)
@@ -340,24 +334,21 @@ void pathfinding() {
     // We run our path finder.
     get_path(entry);
 
-    fp = fopen("solution.txt", "w");
-
-    // printf("\nSolution: \n");
+    printf("\nSolution: \n");
     // printf("%i", found_size);
     for(unsigned long long s = 0; s < SRFC; s++)
-        for(unsigned long x = 0; x < c; x++)
-            for(unsigned long y = 0; y < r; y++)
-                if (path_found[s] == &tiles[x][y]) {
-                    fprintf(fp, "(%lu,%lu)\n", x, y);
+        for(unsigned long i = 0; i < c; i++)
+            for(unsigned long j = 0; j < r; j++)
+                if (path_found[s] == &tiles[i][j]) {
+                    printf("\t · case[%lu][%lu]", i, j);
                     /*
                        if (i == entry.x && j == entry.y)
                        printf(" (point A)");
                        else if (i == xt.x && j == xt.y)
                        printf(" (point B)");
                        */
-                    // printf("\n");
+                    printf("\n");
                     break;
                 }
-    fclose(fp);
-    // printf("\n");
+    printf("\n");
 }
