@@ -4,6 +4,8 @@
 #include "tile.h"
 #include <stdio.h>
 
+// "pf_aux" stands for pathfinding auxiliary.
+
 /* Coordinate reference.
    x0 x1 x2 →
    y0 

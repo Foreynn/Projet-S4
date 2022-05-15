@@ -6,7 +6,6 @@
 #include "tile.h"
 #include "pf_aux.h"
 
-
 // Only for "square" mazes that have no more than 4 294 967 295 tiles in height.
 
 void pathfinding() {
