@@ -70,13 +70,13 @@ void neuralNetwork(size_t size)
 {
     double *inputs;
     double outputs[size*size];
-    
+
     for (size_t i = 0; i < size*size; i++)
     {
         inputs = ImageToList(i);
         outputs[i] = recognition(inputs);
     }
-    
+
     FILE *f = fopen("output.csv", "w+");
     for (size_t i = 0; i < size*size; i++)
     {

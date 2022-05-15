@@ -10,7 +10,7 @@
 
 void pathfinding() {
 
-    char *filename = "project_files/neuralNetwork/output.csv";
+    char *filename = "project_files/output.csv";
 
     char IO_detection = 1;  // cf. the comment in the for loop.
 
@@ -70,7 +70,7 @@ void pathfinding() {
 
     for (unsigned long long i = 0; fgets(buffer, MAX_LENGTH, fp); i++) {
         char number = atoi(buffer);
-        char degree;
+        char degree = 0;
         char arr[4];
         switch (number) {
             case 0:

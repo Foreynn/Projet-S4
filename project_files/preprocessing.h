@@ -1,10 +1,10 @@
 #ifndef PREPROCESSING_H_
 #define PREPROCESSING_H_
-
-#include "SDL/SDL.h"
-#include "SDL/SDL_image.h"
-#include <stdlib.h>
+#define _GNU_SOURCE
 #include <stdio.h>
+#include <SDL/SDL.h>
+#include <SDL/SDL_image.h>
+#include <stdlib.h>
 #include <err.h>
 #include <string.h>
 

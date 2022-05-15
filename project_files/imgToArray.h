@@ -6,7 +6,7 @@
 #include <err.h>
 #include <string.h>
 
-#include "../pixel_operations.h"
+#include "pixel_operations.h"
 
 double* ImageToList(double imageNumber);
 

@@ -1,27 +1,5 @@
 #include "preprocessing.h"
-#include "../pixel_operations.h"
-
-void init_sdl()
-{
-    // Init only the video part.
-    // If it fails, die with an error message.
-    if(SDL_Init(SDL_INIT_VIDEO) == -1)
-        errx(1,"Could not initialize SDL: %s.\n", SDL_GetError());    
-}
-SDL_Surface* load_image(char *path)
-{
-    //An image is represented by a surface
-    SDL_Surface *img;
-
-    //We transform the image to SDL_Surface 
-    // If it fails, die with an error message.
-    img = IMG_Load(path);
-    if (!img)
-        errx(3, "can't load %s: %s", path, IMG_GetError());
-
-    return img;
-}
-
+#include "pixel_operations.h"
 
 //! Resize functions (compress, size_reduciton)
 Uint32 compress(SDL_Surface *image, int w, int h, double ratio_w, double ratio_h)
@@ -147,12 +125,12 @@ unsigned int pre_processing(SDL_Surface *image_surface)
         for (int j = borderSize/2; j < image_surface->w-1; j += size)
         {
             char* name;
-            asprintf(&name, "../cut_images/%04d.bmp", n);
+            asprintf(&name, "cut_images/%04d.bmp", n);
 
             saveImg(image_surface, i, j, size, name);
             n++;
         }
     }
 
-    return size;
+    return image_surface->w/size;
 }
