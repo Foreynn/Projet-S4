@@ -2,10 +2,6 @@
 
 // Only for "square" mazes that have no more than 4 294 967 295 tiles in height.
 
-
-// TODO: inclure la librairie pour SDL_Surface.
-// et pour pixel_operation
-
 SDL_Surface* pathfinding(SDL_Surface* img) {
 
     /* 
@@ -191,7 +187,6 @@ SDL_Surface* pathfinding(SDL_Surface* img) {
                             xt.y = i%r;
                         }
                         nmbrIO++;
-                        // printf("[0][%i] (number: %i)\n", i%r, number);
                     }
 
                     break;
@@ -226,7 +221,6 @@ SDL_Surface* pathfinding(SDL_Surface* img) {
                             xt.y = i%r;
                         }
                         nmbrIO++;
-                        // printf("[%i][%i] (number: %i)\n", c - 1, i%r, number);
                     }
 
                     break;
@@ -262,7 +256,6 @@ SDL_Surface* pathfinding(SDL_Surface* img) {
                             xt.y = 0;
                         }
                         nmbrIO++;
-                        // printf("[%i][0] (number: %i)\n", i/r, number);
                     }
 
                     break;
@@ -298,7 +291,6 @@ SDL_Surface* pathfinding(SDL_Surface* img) {
                             xt.y = r - 1;
                         }
                         nmbrIO++;
-                        // printf("[%i][%i] (number: %i)\n", i/r, r - 1, number);
                     }
 
                     break;
@@ -357,6 +349,6 @@ SDL_Surface* pathfinding(SDL_Surface* img) {
     fclose(fp);
 
     SDL_SaveBMP(img, "solution.bmp");
-    
+
     return img;
 }
