@@ -4,6 +4,7 @@
 #include "preprocessing.h"
 #include "pixel_operations.h"
 
+GtkWidget* ImageSurface;
 SDL_Surface* image;
 char* file_name;
 
@@ -15,7 +16,12 @@ void on_SolveButton_clicked(GtkButton* SolveButton)
 
     size_t size = pre_processing(image); //* Crée les images decoupées dans cut_images et retourne la taille du labyrinthe.
     neuralNetwork(size); //* Enregistre les valeurs des cases dans output.csv
-    pathfinding(); //* Eregistre le chemin dans un fichier solution
+    image = pathfinding(image); //* Eregistre le chemin dans un fichier solution
+    GdkPixbuf* pixbuf = gdk_pixbuf_new_from_file("solution.bmp", NULL);
+
+    pixbuf = gdk_pixbuf_scale_simple(pixbuf, 1000, 1000, GDK_INTERP_HYPER);
+
+    gtk_image_set_from_pixbuf(GTK_IMAGE(ImageSurface), pixbuf);
 }
 
 void on_SaveButton_clicked(GtkButton* SaveButton)
@@ -54,7 +60,7 @@ int main (int argc, char** argv)
     GtkWidget* SolveButton = GTK_WIDGET(gtk_builder_get_object(builder, "SolveButton"));
     GtkWidget* SaveButton = GTK_WIDGET(gtk_builder_get_object(builder, "SaveButton"));
     GtkWidget* ExitButton = GTK_WIDGET(gtk_builder_get_object(builder, "ExitButton"));
-    GtkWidget* ImageSurface = GTK_WIDGET(gtk_builder_get_object(builder, "ImageSurface"));
+    ImageSurface = GTK_WIDGET(gtk_builder_get_object(builder, "ImageSurface"));
 
     gtk_window_fullscreen(GTK_WINDOW(AppWindow));
 
@@ -71,6 +77,7 @@ int main (int argc, char** argv)
     if (save == 0)
     {
         remove("solution.txt");
+        remove("solution.bmp");
     }
 
     return 0;

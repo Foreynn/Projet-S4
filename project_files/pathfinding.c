@@ -1,14 +1,12 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <err.h>
-#include <math.h>
-#include <string.h>
-#include "tile.h"
-#include "pf_aux.h"
+#include "pathfinding.h"
 
 // Only for "square" mazes that have no more than 4 294 967 295 tiles in height.
 
-void pathfinding() {
+
+// TODO: inclure la librairie pour SDL_Surface.
+// et pour pixel_operation
+
+SDL_Surface* pathfinding(SDL_Surface* img) {
 
     /* 
      * Warning: The url below might need to change
@@ -342,22 +340,24 @@ void pathfinding() {
 
     fp = fopen("solution.txt", "w");
 
-    // printf("\nSolution: \n");
-    // printf("%i", found_size);
+    unsigned long w = img->w;
+    printf("");
+    unsigned long unit = w/c;
     for(unsigned long long s = 0; s < SRFC; s++)
         for(unsigned long x = 0; x < c; x++)
             for(unsigned long y = 0; y < r; y++)
                 if (path_found[s] == &tiles[x][y]) {
+                    put_pixel(img, x*unit + unit/2, y*unit + unit/2, SDL_MapRGBA(img->format, 255, 0, 0, 255));
+                    put_pixel(img, x*unit + unit/2 - 1, y*unit + unit/2, SDL_MapRGBA(img->format, 255, 0, 0, 255));
+                    put_pixel(img, x*unit + unit/2, y*unit + unit/2 + 1, SDL_MapRGBA(img->format, 255, 0, 0, 255));
+                    put_pixel(img, x*unit + unit/2, y*unit + unit/2 - 1, SDL_MapRGBA(img->format, 255, 0, 0, 255));
+                    put_pixel(img, x*unit + unit/2 + 1, y*unit + unit/2, SDL_MapRGBA(img->format, 255, 0, 0, 255));
                     fprintf(fp, "(%lu,%lu)\n", x, y);
-                    /*
-                       if (i == entry.x && j == entry.y)
-                       printf(" (point A)");
-                       else if (i == xt.x && j == xt.y)
-                       printf(" (point B)");
-                       */
-                    // printf("\n");
                     break;
                 }
     fclose(fp);
-    // printf("\n");
+
+    SDL_SaveBMP(img, "solution.bmp");
+    
+    return img;
 }

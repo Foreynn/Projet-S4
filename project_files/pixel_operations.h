@@ -10,5 +10,5 @@ SDL_Surface* load_image(char* path);
 Uint32 get_pixel(SDL_Surface *surface, unsigned x, unsigned y);
 void put_pixel(SDL_Surface *surface, unsigned x, unsigned y, Uint32 pixel);
 void update_surface(SDL_Surface* screen, SDL_Surface* image);
-
+Uint32 color(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 #endif
