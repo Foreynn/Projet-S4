@@ -118,7 +118,7 @@ unsigned int pre_processing(SDL_Surface *image_surface)
 {
     int borderSize = 0;
     unsigned int size = getDimension(image_surface, &borderSize);
-    
+
     int n = 0;
     for (int i = borderSize/2; i < image_surface->h-1; i += size)
     {

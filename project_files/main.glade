@@ -17,20 +17,20 @@
           <object class="GtkButtonBox" id="ButtonGrid">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="halign">start</property>
             <property name="orientation">vertical</property>
+            <property name="homogeneous">True</property>
             <property name="layout-style">start</property>
             <child>
               <!-- n-columns=1 n-rows=2 -->
               <object class="GtkGrid" id="InputGrid">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
+                <property name="valign">start</property>
                 <child>
                   <object class="GtkFileChooserButton" id="FileChooser">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="title" translatable="yes"/>
-                    <signal name="file-set" handler="on_FileChooser_file_set" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left-attach">0</property>
@@ -62,8 +62,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="valign">center</property>
-                <signal name="clicked" handler="on_SolveButton_clicked" swapped="no"/>
+                <property name="valign">end</property>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -77,8 +76,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="valign">center</property>
-                <signal name="clicked" handler="on_SaveButton_clicked" swapped="no"/>
+                <property name="valign">end</property>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -93,7 +91,6 @@
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
                 <property name="valign">end</property>
-                <signal name="clicked" handler="exit" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">True</property>

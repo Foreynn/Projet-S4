@@ -10,7 +10,7 @@
 
 void pathfinding() {
 
-    char *filename = "project_files/output.csv";
+    char *filename = "output.csv";
 
     char IO_detection = 1;  // cf. the comment in the for loop.
 
