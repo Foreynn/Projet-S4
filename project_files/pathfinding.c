@@ -14,7 +14,7 @@ void pathfinding() {
      * Warning: The url below might need to change
      * according to the location where the code is executed.
     */
-    char *filename = "project_files/neuralNetwork/output.csv";
+    char *filename = "output.csv";
 
     char IO_detection = 1;  // cf. the comment in the for loop.
 
