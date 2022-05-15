@@ -12,7 +12,7 @@ SDL_Surface* pathfinding(SDL_Surface* img) {
      * Warning: The url below might need to change
      * according to the location where the code is executed.
     */
-    char *filename = "output.csv";
+    char *filename = "project_files/output.csv";
 
     char IO_detection = 1;  // cf. the comment in the for loop.
 
@@ -341,7 +341,6 @@ SDL_Surface* pathfinding(SDL_Surface* img) {
     fp = fopen("solution.txt", "w");
 
     unsigned long w = img->w;
-    printf("");
     unsigned long unit = w/c;
     for(unsigned long long s = 0; s < SRFC; s++)
         for(unsigned long x = 0; x < c; x++)

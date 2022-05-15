@@ -1,7 +1,7 @@
 # Makefile
 CC = gcc
 CPPFLAGS= `pkg-config --cflags sdl` -MMD
-CFLAGS = `pkg-config --cflags gtk+-3.0` -Wall -std=c99 -O3 -g -rdynamic
+CFLAGS = -Wall -Wextra `pkg-config --cflags gtk+-3.0` -std=c99 -O3 -g -rdynamic
 LDFLAGS= -lm -ldl
 LDLIBS = `pkg-config --libs sdl SDL_image gtk+-3.0`
 

@@ -100,7 +100,3 @@ void update_surface(SDL_Surface* screen, SDL_Surface* image)
 
     SDL_UpdateRect(screen, 0, 0, image->w, image->h);
 }
-
-Uint32 color(Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
-    return r << 24 | b << 16 | b << 8 | a;
-}

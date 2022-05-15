@@ -3,19 +3,16 @@
 void SDL_FreeSurface(SDL_Surface *surface);
 
 // la fonction qui transforme l'image en list de 0 et 1
-double* ImageToList(double imageNumber)
+double* ImageToList(int imageNumber)
 {
-    char path[23] = {'c','u','t','_','i','m','a','g','e','s','/','0','0','0','0','.','b','m','p',0};
-    //char* path = "../cut_images/0000.png";
+    char* path;
+//    char* path = "project_files/cut_images/0000.png";
+
+    asprintf(&path, "project_files/cut_images/%04d.bmp", imageNumber);
 
     init_sdl();
     SDL_Surface *img;
     double* list = calloc(9*9, sizeof(double));
-
-    path[11] = 48 + (int)imageNumber / 1000;        // chiffre des milliers de l'image 
-    path[12] = 48 + (int)imageNumber / 100 % 10;    // chiffre des centaines de l'image
-    path[13] = 48 + (int)imageNumber / 10 % 10;     // chiffre des dizaines de l'image
-    path[14] = 48 + (int)imageNumber % 10;          // chiffre des unités de l'image
 
     img = load_image(path);
     Uint32 pixel = 0;

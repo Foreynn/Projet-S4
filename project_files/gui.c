@@ -10,7 +10,7 @@ char* file_name;
 
 char save = 0;
 
-void on_SolveButton_clicked(GtkButton* SolveButton)
+void on_SolveButton_clicked(void)
 {
     image = load_image(file_name);
 
@@ -24,7 +24,7 @@ void on_SolveButton_clicked(GtkButton* SolveButton)
     gtk_image_set_from_pixbuf(GTK_IMAGE(ImageSurface), pixbuf);
 }
 
-void on_SaveButton_clicked(GtkButton* SaveButton)
+void on_SaveButton_clicked(void)
 {
     save = 1;
 }
@@ -40,7 +40,7 @@ void on_FileChooser_file_set(GtkFileChooserButton* FileChooserButton, GtkWidget*
     gtk_image_set_from_pixbuf(GTK_IMAGE(ImageSurface), pixbuf);
 }
 
-void on_ExitButton_clicked()
+void on_ExitButton_clicked(void)
 {
     gtk_main_quit();
 }
@@ -50,7 +50,7 @@ int main (int argc, char** argv)
 {
     gtk_init(&argc, &argv);
 
-    GtkBuilder* builder = gtk_builder_new_from_file("main.glade");
+    GtkBuilder* builder = gtk_builder_new_from_file("project_files/main.glade");
     GtkWidget* AppWindow = GTK_WIDGET(gtk_builder_get_object(builder, "AppWindow"));
 
     g_signal_connect(AppWindow, "destroy", G_CALLBACK(gtk_main_quit), NULL);

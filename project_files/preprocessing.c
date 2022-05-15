@@ -125,7 +125,7 @@ unsigned int pre_processing(SDL_Surface *image_surface)
         for (int j = borderSize/2; j < image_surface->w-1; j += size)
         {
             char* name;
-            asprintf(&name, "cut_images/%04d.bmp", n);
+            asprintf(&name, "project_files/cut_images/%04d.bmp", n);
 
             saveImg(image_surface, i, j, size, name);
             n++;
