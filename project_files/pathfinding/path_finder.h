@@ -3,11 +3,11 @@
 
 /* SRFC is an abreviation for SURFACE.
  * (We've merely kept the consonants.) */
-int SRFC;
+unsigned long long SRFC;
 
 struct tile **tiles;
 struct tile **path_found;
-int found_size;
+unsigned long long found_size;
 struct point {int x; int y;};
 struct point xt;    // xt : exit.
 void get_path(struct point entry);

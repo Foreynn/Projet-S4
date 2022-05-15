@@ -10,8 +10,8 @@ enum direction {
 
 struct tile {
     enum direction *accs;   // accs : access.
-    int dgr;                // degree of freedom : total number of access.
-    int traveled;          // boolean.
+    char dgr;               // degree of freedom : total number of access.
+    char traveled;          // boolean.
 };
 
 #endif

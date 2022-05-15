@@ -15,11 +15,11 @@
 
 /* SRFC is an abreviation for SURFACE.
  * (We've merely kept the consonants.) */
-int SRFC;
+unsigned long SRFC;
 
 struct tile **tiles;
 struct tile **path_found;
-int found_size;
+unsigned long found_size;
 
 struct point {int x; int y;};
 struct point xt;
@@ -32,13 +32,13 @@ int __get_path(struct point entry, int beginning) {
     if (xt.x == entry.x && xt.y == entry.y)
         return 1;   // If we've arrived at the xt.
 
-    int dgr = t->dgr;
+    char dgr = t->dgr;
     if (dgr == 1 && !beginning) 
         return 0;   // If we are in a dead end.
 
     enum direction *access = t->accs;
 
-    for(int i = 0; i < dgr; i++) {
+    for(unsigned char i = 0; i < dgr; i++) {
         
         struct point new_entry = {
             .x = entry.x,
@@ -92,7 +92,7 @@ int __get_path(struct point entry, int beginning) {
 void get_path(struct point entry) {
 
     found_size = 0;
-    int beginning = 1;
+    char beginning = 1;
 
     __get_path(entry, beginning);
 
