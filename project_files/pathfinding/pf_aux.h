@@ -1,5 +1,5 @@
-#ifndef PATH_FINDER_H
-#define PATH_FINDER_H
+#ifndef PF_AUX_H
+#define PF_AUX_H
 
 /* SRFC is an abreviation for SURFACE.
  * (We've merely kept the consonants.) */

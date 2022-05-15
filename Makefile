@@ -1,23 +1,12 @@
-CC=gcc
-CPPFLAGS= `pkg-config --cflags sdl` -MMD
-CFLAGS= -Wall -std=c99 -O3 -g
-LDFLAGS= -lm -ldl
-LDLIBS= `pkg-config --libs sdl SDL_image`
+CC = gcc -lm
+CFLAGS = -Wall -Wextra -Werror -std=c99 -g
 
-SRC= main.c
+all : main
 
-OBJ= $(SRC:%.c=%.o)
-DEP= ${SRC:.c=.d}
-PRG= ${SRC:.c=.out}
+main: main.o project_files/pathfinding/pathfinding.o project_files/pathfinding/pf_aux.o
+pathfinding.o : project_files/pathfinding/pathfinding.h project_files/pathfinding/pf_aux.h project_files/pathfinding/tile.h
+pf_aux.o : project_files/pathfinding/pf_aux.h project_files/pathfinding/tile.h
 
-all: rule
-
-rule: $(OBJ)
-	$(CC) -o main $(CFLAGS) $^ $(LDFLAGS) $(LDLIBS)
-
--include ${DEP}
-
-clean:
-	rm -f *.o
-	rm -f *.d
-	rm -f ${PRG}
+.PHONY : clean
+clean :
+	rm project_files/pathfinding/*.o main.o main

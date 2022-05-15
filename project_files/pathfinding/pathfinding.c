@@ -4,14 +4,14 @@
 #include <math.h>
 #include <string.h>
 #include "tile.h"
-#include "path_finder.h"
+#include "pf_aux.h"
 
 
 // Only for "square" mazes that have no more than 4 294 967 295 tiles in height.
 
-int main() {
+void pathfinding() {
 
-    char *filename = "../neuralNetwork/output.csv";
+    char *filename = "project_files/neuralNetwork/output.csv";
 
     char IO_detection = 1;  // cf. the comment in the for loop.
 
@@ -24,7 +24,7 @@ int main() {
     if (fp == NULL)
     {
         printf("Error: could not open file %s", filename);
-        return 1;
+        // return 1;
     }
 
     // Extract character from file and store in chr.
