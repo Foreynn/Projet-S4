@@ -20,6 +20,10 @@ Our software accepts labyrinth files in the form of an image. Labyrinths must ha
 
 In order to solve the labyrinth, you simply need to press the solve button.
 
+### Outputs:
+
+If you wish to save to solved maze and the solution path coordinates, simply press the save solution button.
+
 ## How to remove our software
 
 Run the `make clean` command in the root of the project repository.
