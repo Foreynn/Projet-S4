@@ -27,7 +27,7 @@ If you wish to save to solved maze and the solution path coordinates, simply pre
 ## How to remove our software
 
 Run the `make clean` command in the root of the project repository.<br>
-Then to delete it : `cd .. && rm Projet-S4`.
+Then to delete it : `cd .. && rm -rf Projet-S4`.
 
 
 #### To know more about the project you can check the official website at the following address : https://foreynn.github.io/Projet-S4/
